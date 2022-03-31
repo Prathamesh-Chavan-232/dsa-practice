@@ -69,7 +69,6 @@ vector<int> it_inorder(node *&root)
     vector<int> res;
     if (root == NULL)
     {
-
         return res;
     }
     stack<node *> s;

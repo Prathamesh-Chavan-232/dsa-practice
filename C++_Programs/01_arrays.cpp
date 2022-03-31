@@ -26,13 +26,13 @@ myArray::myArray(int tSize)
 {
     totalSize = tSize;
     usedSize = tSize;
-    ptr = (int *)malloc(tSize * sizeof(int));
+    ptr = new int[tSize];
 }
 myArray::myArray(int tSize, int uSize)
 {
     totalSize = tSize;
     usedSize = uSize;
-    ptr = (int *)malloc(tSize * sizeof(int));
+    ptr = new int[tSize];
 }
 void myArray::set()
 {

@@ -7,28 +7,13 @@ using namespace std;
 #define ll long long
 #define pb push_back
 #define mp make_pair
-#define pqb priority_queue<int>
-#define pqs priority_queue<int, vector<int>, greater<int>>
 #define all(x) x.begin(), x.end()
 #define clr(x) memset(x, 0, sizeof(x))
 #define tr(it, a) for (auto it = a.begin(); it != a.end(); it++)
 
 // Typdefs for containers
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pl;
 typedef vector<int> vi;
 typedef vector<ll> vl;
-typedef vector<pii> vpii;
-typedef vector<pii> vpii;
-typedef vector<pl> vpl;
-typedef vector<vi> vvi;
-typedef vector<vl> vvl;
-typedef map<int, int> mii;
-typedef map<ll, ll> ml;
-typedef set<ll> sl;
-typedef unordered_map<int, int> umii;
-typedef unordered_map<ll, ll> uml;
-typedef unordered_set<ll> usl;
 
 // Debugging tools
 #ifndef ONLINE_JUDGE
@@ -112,7 +97,7 @@ public:
 void maxHeap::printHeap()
 {
     Fo(i, 1, size) cout << arr[i] << " ";
-    printf("\n");
+    cout << "\n";
 }
 void maxHeap::insert(int val)
 {
@@ -137,61 +122,52 @@ void maxHeap::createMaxHeap(int n)
     Fo(i, 1, n + 1)
     {
         int temp;
-        scanf("%d", &temp);
+        cin >> temp;
         insert(temp);
     }
 }
-void maxHeap::delete()
+void maxHeap::deleteRoot()
 {
-    int i = 1;
-    swap(arr[i], arr[size - 1]);
-    size--;
-    debug(size);
-    debcon(arr);
-    while (true)
-    {
-        if ()
-        {
-            int max_ = arr[2 * i] > arr[2 * i + 1] ? (2 * i) : (2 * i + 1);
-            swap(arr[i], arr[max_]);
-            debcon(arr);
-            i = max_;
-            if (i == size - 1)
-                break;
-        }
-        else
-        {
-            break;
-        }
-    }
-    
+
 }
 
 void maxHeap::heapsort()
 {
-    int n = size;
-    Fo(i, 1, n)
-    {
-        swap(arr[1], arr[size - 1]);
-    }
+    
+}
+
+void solve()
+{
+    int n;
+    cin >> n;
+    maxHeap h;
+    h.createMaxHeap(n);
+    h.printHeap();
+    h.insert(12);
+    h.printHeap();
+    // h.deleteRoot();
+    // h.printHeap();
 }
 int main()
 {
+    auto start = chrono::steady_clock::now();
+    ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #ifndef ONLINE_JUDGE
     freopen("C:/Prathamesh/Programming/input.txt", "r", stdin);
     freopen("C:/Prathamesh/Programming/output.txt", "w", stdout);
     freopen("C:/Prathamesh/Programming/err.txt", "w", stderr);
 #endif
-
-    int n;
-    scanf("%d", &n);
-    maxHeap h;
-    h.createMaxHeap(n);
-    h.printHeap();
-    h.insert(45);
-    h.printHeap();
-    h.delete();
-    h.printHeap();
+    int t = 1;
+    // cin >> t;
+    while (t--)
+    {
+        solve();
+    }
+#ifndef ONLINE_JUDGE
+    auto end = chrono::steady_clock::now();
+    auto diff = end - start;
+    cerr << "[Finished in " << setprecision(3) << chrono::duration<double, milli>(diff).count() << " ms]\n";
+#endif
     return 0;
 }

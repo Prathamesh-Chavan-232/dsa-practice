@@ -33,14 +33,14 @@ void merge(int arr[], int l, int mid, int h)
         }
         k++;
     }
-    for (int i = 0; i < (h + 1); i++)
+    for (int i = 0; i < (h + 1); i++) // Storing sorted elements in orignal array again
     {
         arr[i] = temp[i];
     }
 }
 void mergeSort(int arr[], int l, int h)
 {
-    if (l < h)
+    if (l < h) // base condition
     {
         int mid = (l + h) / 2;
         mergeSort(arr, l, mid);

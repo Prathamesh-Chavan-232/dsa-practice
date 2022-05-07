@@ -44,7 +44,7 @@ int main()
 	int x = 30;
 	int n = sizeof(arr) / sizeof(arr[0]);
 	cout << x << " is present at index "
-		 << search(arr, n, x);
+		 << lin(arr, n, x);
 
 	getchar();
 	return 0;

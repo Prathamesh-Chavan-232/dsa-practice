@@ -6,10 +6,6 @@ using namespace std;
 #define Fo(i, k, n) for (int i = k; k < n ? i < n : i > n; k < n ? ++i : --i)
 #define ll long long
 #define pb push_back
-#define mp make_pair
-#define all(x) x.begin(), x.end()
-#define clr(x) memset(x, 0, sizeof(x))
-#define tr(it, a) for (auto it = a.begin(); it != a.end(); it++)
 
 // Typdefs for containers
 typedef vector<int> vi;
@@ -22,33 +18,6 @@ typedef vector<ll> vl;
 #define debug(...)
 #endif
 
-#ifndef ONLINE_JUDGE
-#define debcon(x)        \
-    cerr << #x << " = "; \
-    _print(x);           \
-    cerr << "\n";
-#else
-#define debcon(x)
-#endif
-
-// Function declarations
-template <typename... Args>
-void logger(string varname, Args &&...values);
-
-template <typename T>
-void _print(T const &c);
-
-template <typename... T>
-void r(T &...args);
-
-template <typename... T>
-void w(T &&...args);
-
-// constants
-const int mod = 1'000'000'007;
-const int N = 1e7, M = N;
-const double PI = 3.1415926535897932384626;
-
 // Function definitions
 template <typename... Args>
 void logger(string varname, Args &&...values) // logger for varadiac debugging print statements
@@ -59,111 +28,177 @@ void logger(string varname, Args &&...values) // logger for varadiac debugging p
     (..., (cerr << delim << values, delim = ", "));
     cerr << "\n";
 }
-template <typename T>
-void _print(T const &c) // print any STL container
-{
-    cerr << "{";
-    tr(it, c) cerr << *it << ", ";
-    cerr << "}";
-}
 
-// Varadiac I/O
 template <typename... T>
 void r(T &...args)
 {
     ((cin >> args), ...);
 }
+
 template <typename... T>
 void w(T &&...args)
 {
-    ((cout << args << " "), ...);
-    cout << "\n";
+    ((cout << args), ...);
 }
 
+// constants
+const int mod = 1'000'000'007;
+const int N = 1e7, M = N;
+const double PI = 3.1415926535897932384626;
+
+/*
+  * Heaps & Heapsort *
+    Theory -
+        Heap -
+            A heap is a sequential data structure implemented using complete binary tree
+             Heap is just array representation of a complete binary tree
+
+        Complete Binary Tree -
+            Binary tree whose all nodes until the level (height - 1) are completely filled
+            & the nodes in the last level are strictly filled from left to right
+
+        Heapsort -
+            Heapsort is a sorting technique used on heaps, deleting the root of heap and inserting it
+            at the free space at the back for every element of the heap results in a sorted array
+            maxheap - sorts in ascending order
+            minheap - sorts in descending order
+
+    Time complexities -
+        Heapify - O(n)
+        Heap Sort - O(n*log(n))
+        Create Heap - O(n*log(n))
+        Insert & Delete in heap - O(log(n))
+*/
+
+// Code Begins Here
 class maxHeap
 {
     vi arr = {0};
-    int size = 1;
+    int size = 0;
 
 public:
     maxHeap() {}
-    void createMaxHeap(int n);
-    void insert(int val);
-    void deleteRoot();
-    void heapify();
-    void printHeap();
-    void heapsort();
+    maxHeap(int n)
+    {
+        Fo(i, 1, n + 1)
+        {
+            int temp;
+            cin >> temp;
+            arr.pb(temp);
+            size++;
+        }
+    }
+    void printHeap()
+    {
+        Fo(i, 1, size + 1) cout << arr[i] << " ";
+        cout << "\n";
+    }
+    void insert(int val)
+    {
+        arr.pb(val);
+        size++;
+        int i = size;
+        while (i > 1)
+        {
+            if (arr[i] > arr[i / 2])
+            {
+                swap(arr[i], arr[i / 2]);
+                i /= 2;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+    void createMaxHeap(int n)
+    {
+        Fo(i, 1, n + 1)
+        {
+            int temp;
+            cin >> temp;
+            insert(temp);
+        }
+    }
+    void heapify(int n, int root)
+    {
+        int largest = root; // ideally root should be the largest
+        int l = 2 * root, r = 2 * root + 1;
+        if (arr[l] > arr[largest] && l < n)
+        {
+            largest = l; // left node is greater than root
+        }
+        if (arr[r] > arr[largest] && r < n)
+        {
+            largest = r; // right node is greater than left node
+        }
+        if (largest != root)
+        {
+            swap(arr[largest], arr[root]);
+            heapify(n, largest);
+        }
+    }
+    void makeHeap()
+    {
+        int startIndx = (arr.size() - 1) / 2; // starting at the first non - leaf node
+        Fo(i, startIndx, 0)
+        {
+            heapify(arr.size(), i);
+        }
+    }
+    void deleteRoot()
+    {
+        swap(arr[size--], arr[1]);
+        heapify(size, 1);
+    }
+
+    void heapsort()
+    {
+        Fo(i, size, 0)
+        {
+            swap(arr[1], arr[i]);
+            heapify(i, 1);
+        }
+    }
 };
-void maxHeap::printHeap()
-{
-    Fo(i, 1, size) cout << arr[i] << " ";
-    cout << "\n";
-}
-void maxHeap::insert(int val)
-{
-    arr.pb(val);
-    size++;
-    int i = size - 1;
-    while (i > 1)
-    {
-        if (arr[i] > arr[i / 2])
-        {
-            swap(arr[i], arr[i / 2]);
-            i /= 2;
-        }
-        else
-        {
-            break;
-        }
-    }
-}
-void maxHeap::createMaxHeap(int n)
-{
-    Fo(i, 1, n + 1)
-    {
-        int temp;
-        cin >> temp;
-        insert(temp);
-    }
-}
-void maxHeap::deleteRoot()
-{
-
-}
-
-void maxHeap::heapsort()
-{
-    
-}
 
 void solve()
 {
     int n;
     cin >> n;
-    maxHeap h;
-    h.createMaxHeap(n);
+    maxHeap h(n);
     h.printHeap();
     h.insert(12);
     h.printHeap();
-    // h.deleteRoot();
-    // h.printHeap();
+    h.heapsort();
+    h.printHeap();
 }
+
 int main()
 {
+    // Start time
     auto start = chrono::steady_clock::now();
+
+    // fast io
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
+
+// Input, Output & error messages inside text files
 #ifndef ONLINE_JUDGE
     freopen("C:/Prathamesh/Programming/input.txt", "r", stdin);
     freopen("C:/Prathamesh/Programming/output.txt", "w", stdout);
     freopen("C:/Prathamesh/Programming/err.txt", "w", stderr);
 #endif
+
+    // Running for multiple testcases / queries
     int t = 1;
     // cin >> t;
     while (t--)
     {
         solve();
     }
+
+// Calculating Runtime
 #ifndef ONLINE_JUDGE
     auto end = chrono::steady_clock::now();
     auto diff = end - start;

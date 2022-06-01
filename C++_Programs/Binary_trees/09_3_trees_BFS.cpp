@@ -37,7 +37,8 @@ vector<vector<int>> node ::lvl_order()
 
         for (int i = 0; i < n; ++i) // storing a lvl
         {
-            node *temp = q.front(); // take each element from the queue and store in the lvl
+            node *temp = q.front();    // take top element from the queue and store in the lvl
+            lvl.push_back(temp->data); // push element in its lvl
             q.pop();
 
             if (temp->left != NULL) // if left isnt null, push it to queue for popping in next iteration
@@ -45,8 +46,6 @@ vector<vector<int>> node ::lvl_order()
 
             if (temp->right != NULL) // if right isnt null, push it to queue for popping in next iteration
                 q.push(temp->right);
-
-            lvl.push_back(temp->data); // push element in its lvl
         }
         res.push_back(lvl); // add lvl to vector of lvls
     }

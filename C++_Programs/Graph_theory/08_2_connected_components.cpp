@@ -4,6 +4,8 @@ using namespace std;
 
 const int N = 1e5 + 10;
 vector<int> adj_list[N];
+vector<int> curr_cc;
+vector<vector<int>> cc;
 bool vis[N];
 
 void Add_edge()
@@ -16,9 +18,10 @@ void Add_edge()
 
 void dfs(int vertex)
 {
-    if (vis[vertex]) return;
+    if (vis[vertex])
+        return;
 
-    cout << vertex << " ";
+    curr_cc.push_back(vertex);
     vis[vertex] = true;
     /** Take action on the vertex after entering
      *   the vertex
@@ -29,7 +32,7 @@ void dfs(int vertex)
         /** Take action on the child after entering
          *   the child
          **/
-    
+
         dfs(child);
         /** Take action on the child before exiting
          *   the child
@@ -49,17 +52,29 @@ int main()
     freopen("C:/Prathamesh/Programming/err.txt", "w", stderr);
 #endif
 
-    int n, m;
-    cin >> n >> m;
-    for (int i = 0; i < m; ++i)
+    int ct = 0;
+    int n, e;
+    cin >> n >> e;
+    for (int i = 0; i < e; ++i)
     {
         Add_edge();
     }
     for (int i = 1; i <= n; ++i)
     {
+        curr_cc.clear();
         if (vis[i])
             continue;
         dfs(i);
+        cc.push_back(curr_cc);
+    }
+    cout << cc.size() << "\n";
+    for (auto &v : cc)
+    {
+        for (auto &i : v)
+        {
+            cout << i << " ";
+        }
+        cout << "\n";
     }
     return 0;
 }

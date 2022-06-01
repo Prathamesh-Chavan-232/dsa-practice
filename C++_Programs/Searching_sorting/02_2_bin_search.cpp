@@ -4,10 +4,10 @@ using namespace std;
 template <typename T>
 int binSearch(vector<T> const &arr, T const target)
 {
-    int mid, res = -1, low = 0, high = arr.size() - 1;
-    while (low <= high)
+    int mid, res = -1, l = 0, r = arr.size() - 1;
+    while (r >= l)
     {
-        mid = low + (high - low) / 2;
+        mid = l + (r - l) / 2;
         if (arr[mid] == target)
         {
             res = mid;
@@ -15,17 +15,17 @@ int binSearch(vector<T> const &arr, T const target)
         }
         else if (arr[mid] < target)
         {
-            low = mid + 1;
+            l = mid + 1;
         }
         else
         {
-            high = mid - 1;
+            r = mid - 1;
         }
     }
     return res;
 }
 int main()
 {
-    
+
     return 0;
 }

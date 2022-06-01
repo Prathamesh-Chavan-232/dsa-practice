@@ -74,28 +74,10 @@ const double PI = 3.1415926535897932384626;
         * Every graph without an odd length cycle is a bipartite graph
 
 */
+vi *adj_list;
+bool *vis;
 
-class graph
-{
-
-private:
-    vi *adj_list;
-    bool *vis;
-
-public:
-    graph() {}
-    graph(int n);
-    void Add_edge();
-    void dfs(int vertex);
-    void bfs(int vertex);
-    void print_graph(int n);
-};
-graph::graph(int n)
-{
-    adj_list = new vi[n];
-    vis = new bool[n];
-}
-void graph::Add_edge()
+void Add_edge()
 {
     int v1, v2;
     cin >> v1 >> v2;
@@ -103,7 +85,7 @@ void graph::Add_edge()
     adj_list[v2].push_back(v1);
 }
 
-void graph::dfs(int vertex)
+void dfs(int vertex)
 {
     cout << vertex << " ";
     vis[vertex] = true;
@@ -118,6 +100,10 @@ void graph::dfs(int vertex)
 }
 void solve()
 {
+    int n;
+    cin >> n;
+    adj_list = new vi[n];
+    vis = new bool[n];
 }
 int main()
 {

@@ -123,6 +123,9 @@ void solve()
     }
     makeHeap();
     printHeap();
+
+    heapsort();
+    printHeap();
 }
 
 int main()

@@ -9,7 +9,9 @@ using namespace std;
 
 // A utility function to find the vertex with minimum distance value, from
 // the set of vertices not yet included in shortest path tree
-int minDistance(int dist[], bool sptSet[])
+
+// use min heap instead of this, TC - O(n), min heap TC - O(log(n)) 
+int minDistance(int dist[], bool sptSet[]) 
 {
 
 	// Initialize min value
@@ -19,7 +21,7 @@ int minDistance(int dist[], bool sptSet[])
 		if (sptSet[v] == false && dist[v] <= min)
 			min = dist[v], min_index = v;
 
-	return min_index;
+	return min_index; 
 }
 
 // A utility function to print the constructed distance array

@@ -15,28 +15,64 @@ public:
         left = NULL;
         right = NULL;
     }
+    friend void print_traversal(vector<int> v);
     friend void create_tree(node *&root);
+    friend void preorder(node *&root);
+    friend void inorder(node *&root);
+    friend void postorder(node *&root);
     friend vector<int> it_preorder(node *&root);
     friend vector<int> it_inorder(node *&root);
-    friend vector<int> it_postorder1(node *&root); // using 1 stack
+    friend vector<int> it_postorder1(node *&root);
 };
 
 void create_tree(node *&root)
 {
-    char isleft = 'n', isright = 'n';
+    char left = 'n', right = 'n';
     int data;
-    cin >> data >> isleft >> isright;
+    cin >> data >> left >> right;
     root = new node(data);
-    if (isleft == 'y' || isleft == 'Y')
+    if (left == 'y' || left == 'Y')
     {
         create_tree(root->left);
     }
-    if (isright == 'y' || isright == 'Y')
+    if (right == 'y' || right == 'Y')
     {
         create_tree(root->right);
     }
 }
 
+void preorder(node *&root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    cout << root->data << " ";
+    preorder(root->left);
+    preorder(root->right);
+}
+
+void inorder(node *&root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    inorder(root->left);
+    cout << root->data << " ";
+    inorder(root->right);
+}
+
+void postorder(node *&root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->data << " ";
+}
 vector<int> it_preorder(node *&root)
 {
     vector<int> res;
@@ -69,6 +105,7 @@ vector<int> it_inorder(node *&root)
     vector<int> res;
     if (root == NULL)
     {
+
         return res;
     }
     stack<node *> s;
@@ -85,7 +122,7 @@ vector<int> it_inorder(node *&root)
         {
             if (s.empty())
             {
-                break; // we use this instead of while(!s.empty()) because when we pop 1 the stack will be empty but it will have right node(s)
+                break; // we use this instead of while(!s.empty()) because when we pop the root stack will be empty but it will have right node(s)
             }
             temp = s.top();
             s.pop();
@@ -105,7 +142,7 @@ vector<int> it_postorder1(node *&root)
     stack<node *> s;
     node *curr, *temp;
     curr = root;
-    do
+    while (!s.empty())
     {
         if (curr != NULL)
         {
@@ -132,26 +169,24 @@ vector<int> it_postorder1(node *&root)
                 curr = temp;
             }
         }
-    } while (!s.empty());
+    }
     return res;
 }
 
-int main()
+void print_traversal(vector<int> v)
 {
-
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-#ifndef ONLINE_JUDGE
-    freopen("C:/Prathamesh/Programming/input.txt", "r", stdin);   // input
-    freopen("C:/Prathamesh/Programming/output.txt", "w", stdout); // output
-#endif
-
-    node *root;
-    create_tree(root);
-    vector<int> v = it_postorder1(root);
     for (auto &value : v)
     {
         cout << value << " ";
     }
+}
+
+int main()
+{
+    node *root;
+    create_tree(root);
+    preorder(root);
+    inorder(root);
+    postorder(root);
     return 0;
 }

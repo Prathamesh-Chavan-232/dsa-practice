@@ -1,4 +1,3 @@
-#include <io.h>
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -55,21 +54,21 @@ void mergeSort(T arr[], int l, int h);
 void solve()
 {
     int n;
-    cin >> n; 
+    cin >> n;
     int *arr = new int[n];
-    
+
     // array input and Randomizing
     for (int i = 0; i < n; ++i)
     {
         arr[i] = i;
     }
     shuffle(arr, arr + n, rng);
-    
+
     _print(arr, n); // unsorted array
-    
+
     int l = 0, h = n - 1;
     mergeSort(arr, l, h);
-    
+
     _print(arr, n); // sorted array
     free(arr);
 }

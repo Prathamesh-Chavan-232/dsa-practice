@@ -115,7 +115,7 @@ BinTree *createTree(vector<int> &nodes);
         the post order traversal.
 
      *  NOTE - unlike other methods & other traversals we require a vector or a 2nd stack over here.
-               In other traversals & methods we were just using the vector for convinience.
+               In other traversals & methods we were just using the vector for storing.
 
  *      Using 1 stack -
 
@@ -124,7 +124,13 @@ BinTree *createTree(vector<int> &nodes);
         then again we need to check left. After both left & right return null check root.
 
      *  Push root / curr to the stack. if curr has left keep pushing it until its null
-        After this, check right & repeat the same procedure
+        After this, check right. Inside right again perfom the order left right root.
+
+     *  If left is null & right is also null, we print curr node.
+
+     *  After this we need to check if curr node is the right node of the previous node. if it is we print it.
+        (since the order is left right root) & we are going in reverse now
+     *  If its not on the right of previous node, then we need to still check right of previous node.
 
  */
 
@@ -140,7 +146,46 @@ void post(BinTree *root, vi &res)
     res.pb(root->val);
 }
 
-vi postorderIt(BinTree *root)
+vi postorderIt1(BinTree *root)
+{
+    vi res;
+    if (root == nullptr)
+        return res;
+
+    stack<BinTree *> st;
+    BinTree *curr = root;
+    while (curr || !st.empty()) // traversal finishes when curr == null and the stack is empty
+    {
+        if (curr)
+        {
+            st.push(curr);
+            curr = curr->left;
+        }
+        else
+        {
+            // left is null, go right
+            BinTree *temp = st.top()->right;
+            if (temp)
+                curr = temp;
+            else
+            {
+                // right is null print root
+                temp = st.top(), st.pop();
+                res.pb(temp->val);
+
+                // checking if temp is the right of previous node
+                while (!st.empty() && temp == st.top()->right)
+                {
+                    temp = st.top(), st.pop();
+                    res.pb(temp->val);
+                }
+            }
+        }
+    }
+    return res;
+}
+
+vi postorderIt2(BinTree *root)
 {
 
     vi res;
@@ -185,7 +230,7 @@ void code()
     BinTree *root = createTree(nodes);
     vi postorder;
     post(root, postorder);
-    vi itPost = postorderIt(root);
+    vi itPost = postorderIt1(root);
     cout << "Postorder traversal...\n";
     printTraversal(postorder);
     cout << "Iterative postorder traversal...\n";

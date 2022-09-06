@@ -13,8 +13,16 @@ using namespace std;
 #define all(x) x.begin(), x.end()
 
 // Typdefs for containers
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pl;
 typedef vector<int> vi;
 typedef vector<ll> vl;
+typedef vector<pii> vpii;
+typedef vector<pl> vpl;
+typedef vector<vi> vvi;
+typedef vector<vl> vvl;
+typedef priority_queue<int> pqb;
+typedef priority_queue<int, vector<int>, greater<int>> pqs;
 
 // Container input tools
 void inVec(vector<int> &v)
@@ -121,6 +129,14 @@ vector<vector<int>> lvlOrder(BinTree *root)
 }
 void code()
 {
+    vi nodes;
+    inVec(nodes);
+    BinTree *root = createTree(nodes);
+    vvi bfs = lvlOrder(root);
+    for (vi lvl : bfs)
+    {
+        debcon(lvl);
+    }
 }
 
 int main()
@@ -153,4 +169,46 @@ int main()
     cerr << "[Finished in " << setprecision(3) << chrono::duration<double, milli>(diff).count() << " ms]\n";
 #endif
     return 0;
+}
+
+BinTree *createTree(vector<int> &nodes)
+{
+    if (nodes.size() == 0)
+        return nullptr;
+    BinTree *root = new BinTree(nodes[0]);
+    queue<BinTree *> q;
+    q.push(root);
+    int i = 1;
+    while (!q.empty())
+    {
+        BinTree *node = q.front();
+        q.pop();
+        if (i >= nodes.size())
+            break;
+        int val = nodes[i++];
+        if (val == -1)
+        {
+            node->left = nullptr;
+        }
+        else
+        {
+            BinTree *leftNode = new BinTree(val);
+            node->left = leftNode;
+            q.push(leftNode);
+        }
+        if (i >= nodes.size())
+            break;
+        val = nodes[i++];
+        if (val == -1)
+        {
+            node->right = nullptr;
+        }
+        else
+        {
+            BinTree *rightNode = new BinTree(val);
+            node->right = rightNode;
+            q.push(rightNode);
+        }
+    }
+    return root;
 }

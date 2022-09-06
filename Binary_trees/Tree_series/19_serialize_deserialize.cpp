@@ -88,7 +88,7 @@ TreeNode *deserialize(vector<string> &serial)
             TreeNode *leftNode = new TreeNode(stoi(str));
             node->left = leftNode;
             q.push(leftNode);
-        }     
+        }
         str = serial[i++];
         debug(str, i);
         debug("lol");

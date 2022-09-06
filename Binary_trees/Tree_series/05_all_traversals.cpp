@@ -1,100 +1,169 @@
-#include <iostream>
 #include <bits/stdc++.h>
 using namespace std;
 
+// Shortening syntax
+#define ll long long
+#define fo(i, n) for (ll i = 0; i < n; ++i)
+#define Fo(i, k, n) for (ll i = k; k < n ? i < n : i > n; k < n ? ++i : --i)
+#define foreach(it, a) for (auto it = a.begin(); it != a.end(); it++)
 
-class node
+// Shortenting stl function calls
+#define pb push_back
+#define mp make_pair
+#define all(x) x.begin(), x.end()
+
+// Typdefs for containers
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pl;
+typedef vector<int> vi;
+typedef vector<ll> vl;
+typedef vector<pii> vpii;
+typedef vector<pl> vpl;
+typedef vector<vi> vvi;
+typedef vector<vl> vvl;
+typedef priority_queue<int> pqb;
+typedef priority_queue<int, vector<int>, greater<int>> pqs;
+
+// Container input tools
+void inVec(vector<int> &v)
 {
-    int data;
-    node *left;
-    node *right;
+    string s;
+    getline(cin, s);
+    int num = 0, sign = 1;
 
-public:
-    node() {}
-    node(int data)
+    for (int i = 0; i < s.size(); ++i)
     {
-        this->data = data;
-        left = NULL;
-        right = NULL;
-    }
-    friend void create_tree(node *&root);
-    friend vector<vector<int>> all_traversals(node *&root);
-};
-
-void create_tree(node *&root)
-{
-    char isleft = 'n', isright = 'n';
-    int data;
-    cin >> data >> isleft >> isright;
-    root = new node(data);
-    if (isleft == 'y' || isleft == 'Y')
-    {
-        create_tree(root->left);
-    }
-    if (isright == 'y' || isright == 'Y')
-    {
-        create_tree(root->right);
-    }
-}
-
-vector<vector<int>> all_traversals(node *&root)
-{
-    vector<vector<int>> res;
-    if (root == NULL)
-    {
-        return res;
-    }
-    vector<int> pre, in, post;
-    stack<pair<node *, int>> s;
-    s.push({root, 1});
-
-    while (!s.empty())
-    {
-        auto it = s.top();
-        s.pop();
-        if (it.second == 1)
-        {
-            pre.push_back(it.first->data);
-            it.second++;
-            s.push(it);
-            if (it.first->left != NULL)
-            {
-                s.push({it.first->left, 1});
-            }
-        }
-        else if (it.second == 2)
-        {
-            in.push_back(it.first->data);
-            it.second++;
-            s.push(it);
-            if (it.first->right != NULL)
-            {
-                s.push({it.first->right, 1});
-            }
-        }
+        if (s[i] == '[' || s[i] == ']')
+            continue;
+        if (s[i] == '-')
+            sign = -1;
+        else if (s[i] == ',' || s[i] == ' ')
+            v.push_back(num), num = 0;
         else
         {
-            post.push_back(it.first->data);
+            num = num * 10 + (s[i] - '0');
+            num *= sign;
+            sign = 1;
         }
     }
-    res.push_back(pre);
-    res.push_back(in);
-    res.push_back(post);
-    return res;
+    v.push_back(num);
 }
 
-int main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+// Varidiac Variable debugger
 #ifndef ONLINE_JUDGE
-    freopen("C:/Prathamesh/Programming/input.txt", "r", stdin);   // input
-    freopen("C:/Prathamesh/Programming/output.txt", "w", stdout); // output
+#define debug(...) logger(#__VA_ARGS__, __VA_ARGS__)
+#else
+#define debug(...)
 #endif
+template <typename... Args>
+void logger(string varname, Args &&...values) // logger for varadiac debugging print statements
+{
 
-    node *root;
-    create_tree(root);
-    vector<vector<int>> v = all_traversals(root);
+    cerr << varname << " =";
+    string delim = " ";
+    (..., (cerr << delim << values, delim = ", "));
+    cerr << "\n";
+}
+
+// debugger for STL vector / set (of any type)
+#ifndef ONLINE_JUDGE
+#define debcon(x)        \
+    cerr << #x << " = "; \
+    _print(x);           \
+    cerr << "\n";
+#else
+#define debcon(x)
+#endif
+template <typename T>
+void _print(T const &c)
+{
+    cerr << "{ ";
+    foreach (it, c)
+    {
+        it != --c.end() ? cerr << *it << ", " : cerr << *it;
+    }
+    cerr << "}";
+}
+
+// Data structures
+struct BinTree
+{
+    int val;
+    BinTree *left;
+    BinTree *right;
+    BinTree() {}
+    BinTree(int val) : val(val), left(nullptr), right(nullptr) {}
+};
+
+// Function declarations
+BinTree *createTree(vector<int> &nodes);
+
+/**
+ * @brief -
+ *      Calculates all 3 traversals in one flow
+ ** @approach -
+ * push nodes in the stack along with a corresponding number
+ *   1 -> pre, 2 -> in, 3 -> post
+ * push {root,1}
+ * if num == 1
+ *   pre.pb(root), num++ & push root->left
+ * if num == 2
+ *   in.pb(root), num++ push root->right
+ * if num == 3
+ *   post.pb(root)
+ * @param root
+ * @return vvi - vectors containing pre, in & post order traversals
+ */
+
+// classes & functions
+vvi allTraversals(BinTree *root)
+{
+
+    vvi all;
+    if (root == nullptr)
+        return all;
+    vi pre, in, post;
+    stack<pair<BinTree *, int>> st;
+    st.push({root, 1});
+    while (!st.empty())
+    {
+        auto &[curr, order] = st.top();
+        st.pop();
+        if (order == 1)
+        {
+            order++;
+            pre.pb(curr->val);
+
+            if (curr->left)
+                st.push({curr->left, 1});
+        }
+        else if (order == 2)
+        {
+            order++;
+            in.pb(curr->val);
+
+            if (curr->right)
+                st.push({curr->right, 1});
+        }
+        else
+            post.pb(curr->val);
+    }
+    all.pb(pre);
+    all.pb(in);
+    all.pb(post);
+    return all;
+}
+
+void code()
+{
+    vi nodes;
+    inVec(nodes);
+    BinTree *root = createTree(nodes);
+    vvi all = allTraversals(root);
+    for (vi travs : all)
+    {
+        debcon(travs);
+    }
     for (int i = 0; i < 3; ++i)
     {
 
@@ -111,11 +180,84 @@ int main()
             cout << "Postorder: ";
         }
 
-        for (auto &value : v[i])
+        for (auto &value : all[i])
         {
             cout << value << " ";
         }
         cout << endl;
     }
+}
+
+int main()
+{
+    // Start time
+    auto start = chrono::steady_clock::now();
+
+    // fast io
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+// Input, Output & error messages inside text files
+#ifndef ONLINE_JUDGE
+    freopen("/home/falcon_codes/prathamesh/programming/input.txt", "r", stdin);
+    freopen("/home/falcon_codes/prathamesh/programming/output.txt", "w", stdout);
+    freopen("/home/falcon_codes/prathamesh/programming/err.txt", "w", stderr);
+#endif
+
+    int t = 1;
+    // cin >> t;
+    while (t--)
+    {
+        code();
+    }
+
+// Calculating Runtime
+#ifndef ONLINE_JUDGE
+    auto end = chrono::steady_clock::now();
+    auto diff = end - start;
+    cerr << "[Finished in " << setprecision(3) << chrono::duration<double, milli>(diff).count() << " ms]\n";
+#endif
     return 0;
+}
+
+BinTree *createTree(vector<int> &nodes)
+{
+    if (nodes.size() == 0)
+        return nullptr;
+    BinTree *root = new BinTree(nodes[0]);
+    queue<BinTree *> q;
+    q.push(root);
+    int i = 1;
+    while (!q.empty())
+    {
+        BinTree *node = q.front();
+        q.pop();
+        if (i >= nodes.size())
+            break;
+        int val = nodes[i++];
+        if (val == -1)
+        {
+            node->left = nullptr;
+        }
+        else
+        {
+            BinTree *leftNode = new BinTree(val);
+            node->left = leftNode;
+            q.push(leftNode);
+        }
+        if (i >= nodes.size())
+            break;
+        val = nodes[i++];
+        if (val == -1)
+        {
+            node->right = nullptr;
+        }
+        else
+        {
+            BinTree *rightNode = new BinTree(val);
+            node->right = rightNode;
+            q.push(rightNode);
+        }
+    }
+    return root;
 }

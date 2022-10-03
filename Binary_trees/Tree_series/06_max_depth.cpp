@@ -99,94 +99,88 @@ struct BinTree
 BinTree *createTree(vector<int> &nodes);
 
 /**
- * @brief -
- *      Calculates all 3 traversals in one flow
- ** @approach -
- * push nodes in the stack along with a corresponding number
- *   1 -> pre, 2 -> in, 3 -> post
- * push {root,1}
- * if num == 1
- *   pre.pb(root), num++ & push root->left
- * if num == 2
- *   in.pb(root), num++ push root->right
- * if num == 3
- *   post.pb(root)
- * @param root
- * @return vvi - vectors containing pre, in & post order traversals
+ * @brief-
+ *      Calculate Maximum depth of a node & height of the binary tree
+ *  Using DFS -
+ *      For a Null node. The maxDepth is 0, For its parent the maxDepth is 1 + max(depth_left_child,depth_right_child)
+ *
+ *              3     ---> depth = 3
+ *             / \
+ *          null  2   ---> depth = 2
+ *                 \
+ *                  1 ---> depth = 1
+ *                   \
+ *                    null
+ *      T.C - O(n)
+ *      S.C -
+ *         Avg case - O(log(n)) or O(maxDepth)
+ *         Worst case - O(n) In case of a skew tree the auxillary stack will have all the nodes
+ *
+ *
+ *  Using BFS -
+ *      Simple lvl order traversal.
+ *              for max depth -
+ *                    lastLvl - lvlof(currNode)
+ *                    lvlOrder.size() - lvlOrder.indexOf(currNode)
+ *
+ *
  */
 
 // classes & functions
-vvi allTraversals(BinTree *root)
+
+int maxDepth(BinTree *root)
 {
-
-    vvi all;
     if (root == nullptr)
-        return all;
-    vi pre, in, post;
-    stack<pair<BinTree *, int>> st;
-    st.push({root, 1});
-    while (!st.empty())
+        return 0;
+
+    int lh = maxDepth(root->left);
+    int lr = maxDepth(root->right);
+    return 1 + max(lh, lr);
+}
+
+// classes & functions
+vector<vector<int>> lvlOrder(BinTree *root)
+{
+    vector<vector<int>> res;
+    if (root == nullptr)
+        return res;
+
+    queue<BinTree *> q;
+    q.push(root);
+    while (!q.empty())
     {
-        auto &[curr, order] = st.top();
-        st.pop();
-        if (order == 1)
+        vector<int> lvl;
+        int sz = q.size();
+        for (int i = 0; i < sz; ++i)
         {
-            st.push({curr, ++order});
-            pre.pb(curr->val);
+            BinTree *curr = q.front();
+            q.pop();
 
-            if (curr->left)
-                st.push({curr->left, 1});
-        }
-        else if (order == 2)
-        {
-            st.push({curr, ++order});
-            in.pb(curr->val);
+            if (curr->left != nullptr)
+                q.push(curr->left);
+            if (curr->right != nullptr)
+                q.push(curr->right);
 
-            if (curr->right)
-                st.push({curr->right, 1});
+            lvl.push_back(curr->val);
         }
-        else
-            post.pb(curr->val);
+        res.push_back(lvl);
     }
-    all.pb(pre);
-    all.pb(in);
-    all.pb(post);
-    return all;
+    return res;
 }
 
 void code()
 {
     vi nodes;
     inVec(nodes);
-    debcon(nodes);
     BinTree *root = createTree(nodes);
-    vvi all = allTraversals(root);
-    for (vi travs : all)
+    int res = maxDepth(root); // store return value
+    vvi lvls = lvlOrder(root);
+    for (auto lvl : lvls)
     {
-        debcon(travs);
+        debcon(lvl);
     }
-    for (int i = 0; i < 3; ++i)
-    {
-
-        if (i == 0)
-        {
-            cout << "Preorder: ";
-        }
-        else if (i == 1)
-        {
-            cout << "Inorder: ";
-        }
-        else
-        {
-            cout << "Postorder: ";
-        }
-
-        for (auto &value : all[i])
-        {
-            cout << value << " ";
-        }
-        cout << endl;
-    }
+    cout << res << "\n";
+    // cout << res << endl;
 }
 
 int main()

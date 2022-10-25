@@ -5,15 +5,12 @@ using namespace std;
 #define ll long long
 #define fo(i, n) for (ll i = 0; i < n; ++i)
 #define Fo(i, k, n) for (ll i = k; k < n ? i < n : i > n; k < n ? ++i : --i)
+#define foreach(it, a) for (auto it = a.begin(); it != a.end(); it++)
+
+// Shortenting stl function calls
 #define pb push_back
 #define mp make_pair
-#define pqb priority_queue<int>
-#define pqs priority_queue<int, vector<int>, greater<int>>
 #define all(x) x.begin(), x.end()
-#define clr(x) memset(x, 0, sizeof(x))
-#define foreach(it, a) for (auto it = a.begin(); it != a.end(); it++)
-#define formap(m) for (auto [key, value] : m)
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 // Typdefs for containers
 typedef pair<int, int> pii;
@@ -24,6 +21,8 @@ typedef vector<pii> vpii;
 typedef vector<pl> vpl;
 typedef vector<vi> vvi;
 typedef vector<vl> vvl;
+typedef priority_queue<int> pqb;
+typedef priority_queue<int, vector<int>, greater<int>> pqs;
 
 // Varidiac Variable debugger
 #ifndef ONLINE_JUDGE
@@ -41,7 +40,7 @@ void logger(string varname, Args &&...values) // logger for varadiac debugging p
     cerr << "\n";
 }
 
-// STL vector / set (of any type) debugger
+// debugger for STL vector / set (of any type)
 #ifndef ONLINE_JUDGE
 #define debcon(x)        \
     cerr << #x << " = "; \
@@ -56,46 +55,62 @@ void _print(T const &c)
     cerr << "{ ";
     foreach (it, c)
     {
-        cerr << *it << ", ";
+        it != --c.end() ? cerr << *it << ", " : cerr << *it;
     }
     cerr << "}";
 }
 
-// Function definitions
-void Add_edge(int v1, int v2);
-void dfs(int vertex);
-
 // constants
 const int mod = 1'000'000'007;
-const int N = 1e7, M = N;
+const int N = 1e5 + 10, M = N;
 const double PI = 3.1415926535897932384626;
 
-// For Adjacency List
-vi graph[N];
+vi graph[N]; // For Adjacency List
 bool vis[N];
 
-// For Adjacency matrix
-const int n = 1e3;
-int g[n][n];
+/**
+ * @brief
+ *
+ */
 
-/*
-    Link -
-    Problem -
-    Difficulty -
-    contest -
-    Status -
-    Date -
-*/
-/*  Approach -
-
-*/
-
-void dfs()
+// classes & functions
+void Add_edge(int v1, int v2)
 {
-    
+    graph[v1].push_back(v2);
+    graph[v2].push_back(v1);
 }
+bool dfs(int vertex, int parent)
+{
+    vis[vertex] = true;
+    bool isCycle = false;
+    for (auto &child : graph[vertex])
+    {
+        if (vis[child] && child == parent)
+            continue;
+        else if (vis[child])
+            return true;
+        isCycle |= dfs(child, vertex);
+    }
+    return isCycle;
+}
+
 void code()
 {
+    int n, e;
+    cin >> n >> e;
+    for (int i = 0; i < n; ++i)
+    {
+        int vi, vj;
+        cin >> vi >> vj;
+        Add_edge(vi, vj);
+    }
+    for (int i = 1; i <= n; ++i)
+    {
+        if (vis[i])
+            continue;
+        int res = dfs(i, 0);
+        cout << res << "\n";
+    }
 }
 
 int main()
@@ -109,12 +124,11 @@ int main()
 
 // Input, Output & error messages inside text files
 #ifndef ONLINE_JUDGE
-    freopen("C:/Prathamesh/Programming/input.txt", "r", stdin);
-    freopen("C:/Prathamesh/Programming/output.txt", "w", stdout);
-    freopen("C:/Prathamesh/Programming/err.txt", "w", stderr);
+    freopen("/home/falconcodes/prathamesh/programming/input.txt", "r", stdin);
+    freopen("/home/falconcodes/prathamesh/programming/output.txt", "w", stdout);
+    freopen("/home/falconcodes/prathamesh/programming/err.txt", "w", stderr);
 #endif
 
-    // Running for multiple testcases / queries
     int t = 1;
     // cin >> t;
     while (t--)

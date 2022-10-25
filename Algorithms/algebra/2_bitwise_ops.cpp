@@ -41,18 +41,24 @@ void solve()
 }
 int main()
 {
+    auto start = chrono::steady_clock::now();
+    ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 #ifndef ONLINE_JUDGE
-    freopen("C:/Prathamesh/Programming/input.txt", "r", stdin);
-    freopen("C:/Prathamesh/Programming/output.txt", "w", stdout);
-    freopen("C:/Prathamesh/Programming/err.txt", "w", stderr);
+    freopen("/home/falconcodes/prathamesh/programming/input.txt", "r", stdin);
+    freopen("/home/falconcodes/prathamesh/programming/output.txt", "w", stdout);
+    freopen("/home/falconcodes/prathamesh/programming/err.txt", "w", stderr);
 #endif
     int t = 1;
-    scanf("%d", &t);
+    cin >> t;
     while (t--)
     {
         solve();
     }
-
+#ifndef ONLINE_JUDGE
+    auto end = chrono::steady_clock::now();
+    auto diff = end - start;
+    cerr << "[Finished in " << setprecision(3) << chrono::duration<double, milli>(diff).count() << " ms]\n";
+#endif
     return 0;
 }

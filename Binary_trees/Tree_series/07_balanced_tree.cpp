@@ -99,33 +99,9 @@ struct BinTree
 BinTree *createTree(vector<int> &nodes);
 
 /**
- * @brief-
- *      Calculate Maximum depth of a node & height of the binary tree
- *  Using DFS -
- *      For a Null node. The maxDepth is 0,
- *  For its parent the maxDepth is 1 + max(depth_left_child,depth_right_child)
+ * @brief
  *
- *
- *              3     ---> depth = 3
- *             / \
- *          null  2   ---> depth = 2
- *                 \
- *                  1 ---> depth = 1
- *                   \
- *                    null
- *      T.C - O(n)
- *      S.C -
- *         Avg case - O(log(n)) or O(maxDepth)
- *         Worst case - O(n) In case of a skew tree the auxillary stack will have all the nodes
- *
- *
- *  Using BFS -
- *      Simple lvl order traversal.
- *              for max depth -
- *                    lastLvl - lvlof(currNode)
- *                    lvlOrder.size() - lvlOrder.indexOf(currNode)
  */
-
 // classes & functions
 class Solution
 {
@@ -133,23 +109,32 @@ public:
     int maxDepth(BinTree *root)
     {
         if (root == nullptr)
+        {
             return 0;
-
+        }
         int lh = maxDepth(root->left);
         int lr = maxDepth(root->right);
         return 1 + max(lh, lr);
+    }
+    bool isBalanced(BinTree *root)
+    {
+        if (root == nullptr)
+            return true;
+        int leftH = maxDepth(root->left);
+        int rightH = maxDepth(root->right);
+        int diff = abs(leftH - rightH);
+        return diff <= 1;
     }
 };
 
 void code()
 {
+    Solution s;
     vi nodes;
     inVec(nodes);
-    Solution s;
     BinTree *root = createTree(nodes);
-    int res = s.maxDepth(root); // store return value
-    cout << res << "\n";
-    // cout << res << endl;
+    int res = s.isBalanced(root);
+    cout << res << endl;
 }
 
 int main()
@@ -183,7 +168,6 @@ int main()
 #endif
     return 0;
 }
-
 BinTree *createTree(vector<int> &nodes)
 {
     if (nodes.size() == 0)

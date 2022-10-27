@@ -148,6 +148,8 @@ void code()
 
     // toggle bit
     convertToBin(x ^ (1 << 2));
+
+    cout << __builtin_popcountll(x) << "\n";
 }
 
 int main()

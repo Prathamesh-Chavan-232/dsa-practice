@@ -3,6 +3,8 @@ using namespace std;
 
 // Shortening syntax
 #define ll long long
+#define fo(i, n) for (ll i = 0; i < n; ++i)
+#define Fo(i, k, n) for (ll i = k; k < n ? i < n : i > n; k < n ? ++i : --i)
 #define foreach(it, a) for (auto it = a.begin(); it != a.end(); it++)
 
 // Shortenting stl function calls
@@ -99,13 +101,8 @@ const int N = 1e5 + 10, M = N;
 const double PI = 3.1415926535897932384626;
 
 /**
- * @brief-
- *      Binary numbers & Bitwise Operators
- * 1. Convert Decimal to Binary
- *      (num >> i) & 1 tells us if ith bit is set or not
- *              e.g 9 & (1 >> 2)  = 1001 & 0100 = 0
- * 2. Set & Unset bit
- *
+ * @brief- Handy tricks for performing useful arithimetic & logical operations using bits
+ *         Using bitwise operators is usually faster than using other operators (e.g using << or >> instead of * or /)
  *
  */
 
@@ -114,43 +111,68 @@ vi graph[N];
 bool vis[N];
 
 // classes & functions
-vi convertToBin(ll x) // good to in LL to avoid overflows
+void printBin(int x)
 {
-
-    ll n = ceil(log2((float)x)); // No of digits in the binary num = wt of last digit + 1
-    vi bin(n);
-    debug(n);
-    for (int i = n - 1; i >= 0; --i) // reverse for since we print from msb to lsb
+    int n = log2(float(x)) + 1;
+    for (int i = n - 1; i >= 0; --i)
     {
-
-        int bit = (x >> i) & 1;
-        debug(i, bit);
-        cout << bit;
-        bin[i] = bit; // 1st element -> MSB
-        // can also be done using left shift but this method is more intuitive
-        // and we can store in an array & print at the same time.
+        cout << ((x >> i) & 1);
     }
     cout << "\n";
-    return bin;
 }
 
 void code()
 {
-    int x;
-    cin >> x;
-    // Convert Decimal to Binary
-    vi res = convertToBin(x); // store return value
+    int n;
+    cin >> n;
+    if (n & 1)
+        cout << "odd\n";
+    else
+        cout << "even\n";
 
-    // Set ith bit
-    convertToBin(x | (1 << 2));
+    // Mulitply by 2
+    cout << (n << 1) << "\n";
+    printBin(n << 1);
 
-    // Unset ith bit
-    convertToBin(x & ~(1 << 2));
+    // Divide by 2
+    cout << (n >> 1) << "\n";
+    printBin(n >> 1);
 
-    // toggle bit
-    convertToBin(x ^ (1 << 2)); // xor is 1 when inputs are unequal & 0 when inputs are equal
+    // (hi + lo) >> 1; Can use this in binary search
 
-    cout << __builtin_popcountll(x) << "\n"; // counts total set bits in a number
+    for (char i = 'A'; i <= 'E'; ++i)
+    {
+        cout << i << "\n";
+        printBin(int(i));
+    }
+    for (char i = 'a'; i <= 'e'; ++i)
+    {
+        cout << i << "\n";
+        printBin(int(i));
+    }
+    // printBin('A' | (1 << 5));
+    // char a = 'A' | (1 << 5);
+
+    // lowercase to uppercase
+    char a = 'A' | ' ';
+
+    // uppercasse lowercase
+    char A = 'a' & '_';
+
+    cout << a << "\n";
+    cout << A << "\n";
+
+    printBin(59);
+
+    // clear, unset, set or toggle i LSBs from a number
+    int num = 59, i = 1;
+    int b = num & (~((1 << (i + 1)) - 1));
+    printBin(b);
+
+    // clear, unset, set or toggle i MSBs from a number
+    i = 3;
+    int c = num & ((1 << (i + 1)) - 1);
+    printBin(c);
 }
 
 int main()

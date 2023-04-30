@@ -135,7 +135,7 @@ void code()
     vvi bfs = lvlOrder(root);
     for (vi lvl : bfs)
     {
-        debcon(lvl);
+        debvec(lvl);
     }
 }
 

@@ -74,7 +74,7 @@ bool vis[N];
  */
 
 // classes & functions
-void Add_edge(int v1, int v2)
+void addEdge(int v1, int v2)
 {
     graph[v1].push_back(v2);
     graph[v2].push_back(v1);
@@ -102,7 +102,7 @@ void code()
     {
         int vi, vj;
         cin >> vi >> vj;
-        Add_edge(vi, vj);
+        addEdge(vi, vj);
     }
     for (int i = 1; i <= n; ++i)
     {

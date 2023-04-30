@@ -158,12 +158,12 @@ void code()
 {
     vi nodes;
     inVec(nodes);
-    debcon(nodes);
+    debvec(nodes);
     BinTree *root = createTree(nodes);
     vvi all = allTraversals(root);
     for (vi travs : all)
     {
-        debcon(travs);
+        debvec(travs);
     }
     for (int i = 0; i < 3; ++i)
     {
